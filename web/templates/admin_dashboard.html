@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="web/static/style2.css">
+</head>
+<body>
+
+    <h1 style="text-align: center; margin-bottom: 50px;">Admin Panel</h1>
+
+    <div style="display: block;float: right;margin-right: 20px;margin-bottom: 30px;">
+        <form action="/admin-signout" method="post">
+            <button class="logout" id="logout">Logout</button>
+        </form>
+    </div>
+
+    <div class="header">
+        <div class="search-bar">
+            <form action="/search" method="post">
+                <input type="text" id="search" name="searchUser" placeholder="Search users...">
+                <button type="submit" class="add-btn">Search</button>
+            </form>
+        </div>
+        <button class="add-btn" id="addBtn">Add User</button>
+    </div>
+  
+
+    <div class="container">
+    {{range .}}
+    <div class="user-card">
+        <h3>{{.Name}}</h3>
+        <p>Email: {{.Email}}</p>
+        <div class="actions">
+            <button class="edit-btn" data-username="{{.Name}}" data-email="{{.Email}}">Edit</button>
+            <form action="/delete-user" method="post">
+            <button class="delete-btn" name="currentName" value="{{.Name}}" type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
+    {{end}}
+
+    </div>
+
+    <!-- The Modal -->
+    <div id="userModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="addUserSection" class="modal-section">
+                <h2 style="text-align: center;">Add New User</h2>
+                <form id="userForm" action="/addUser" method="POST">
+
+                    <input type="hidden" name="originPage" value="adminPanel">
+
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit" id="modalBtn">Add User</button>
+                </form>
+            </div>
+
+            <div id="editUserSection" class="modal-section">
+                <h2 style="text-align: center;">Edit User</h2>
+                <form id="editUserForm" action="/update-user" method="POST">
+
+                    <input type="hidden" id="currentUsername" name="currentUsername">
+
+                    
+                    <label for="editUsername">Username:</label>
+                    <input type="text" id="editUsername" name="username" required>
+
+                    <label for="editEmail">Email:</label>
+                    <input type="email" id="editEmail" name="email" required>
+
+                    <label for="editPassword">Password:</label>
+                    <input type="password" id="editPassword" name="password">
+
+                    <button type="submit" id="editModalBtn" value="">Update User</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+// Get the modal
+var modal = document.getElementById("userModal");
+
+// Get the buttons that open the modal
+var addBtn = document.getElementById("addBtn");
+var editBtns = document.getElementsByClassName("edit-btn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// Get modal sections
+var addUserSection = document.getElementById("addUserSection");
+var editUserSection = document.getElementById("editUserSection");
+
+// Get modal elements
+var userForm = document.getElementById("userForm");
+var editUserForm = document.getElementById("editUserForm");
+
+// Ensure modal is hidden initially
+window.onload = function() {
+    modal.style.display = "none";
+}
+
+// Function to open the modal in Add mode
+addBtn.onclick = function() {
+    addUserSection.classList.add("active");
+    editUserSection.classList.remove("active");
+    userForm.reset();
+    modal.style.display = "flex"; // Show modal when Add button is clicked
+}
+
+Array.from(editBtns).forEach(function(btn) {
+    btn.onclick = function() {
+        var username = btn.getAttribute("data-username");
+        var email = btn.getAttribute("data-email");
+        
+        // Log the username being set
+        console.log("Setting currentUsername to: " + username);
+        
+        addUserSection.classList.remove("active");
+        editUserSection.classList.add("active");
+
+        document.getElementById("editUsername").value = username;
+        document.getElementById("editEmail").value = email;
+        document.getElementById("editPassword").value = ""; // Keep password empty to allow for change
+
+        // Set hidden input value for current username dynamically
+        document.getElementById("currentUsername").value = username;
+
+        modal.style.display = "flex"; // Show modal when Edit button is clicked
+    }
+});
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+    </script>
+    
+
+</body>
+</html>

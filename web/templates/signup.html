@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="web/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="frame">
+            <div class="nav">
+                <ul class="links">
+                    <li class="signin-inactive"><a href="/login" class="btn">Existing User</a></li>
+                    <li class="signup-active"><a href="/signup" class="btn">New User</a></li>
+                </ul>
+            </div>
+            <form class="form-signin" id="register" action="/signup" method="post" name="form">
+                <input type="hidden" name="originPage" value="signup">
+                <label for="username">User name</label>
+                <input class="form-styling" type="text" name="username" required />
+
+                <label for="email">Email</label>
+                <input class="form-styling" type="email" name="email" required />
+
+                <label for="password">Create password</label>
+                <input class="form-styling" type="password" name="password" required />
+                {{if .Error}}
+                <span style="color: red;">{{.Error}}</span>
+                {{end}}
+
+                <button type="submit" class="btn-signup">Register</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script src="web/static/script.js"></script> -->
+</body>
+</html>

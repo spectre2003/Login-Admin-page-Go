@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin-login</title>
+    <link rel="stylesheet" href="web/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="frame">
+            <div style="text-align: center;color: white;">
+                <h2>Admin Login</h2>
+            </div>
+            <form class="form-signin" action="/admin-login" method="post" name="form">
+                <label for="adminName">Admin name</label>
+                <input class="form-styling" type="text" name="adminName" required />
+
+                <label for="password">Password</label>
+                <input class="form-styling" type="password" name="password" required />
+                {{if .Error}}
+                <span style="color: red;">{{.Error}}</span>
+                {{end}}
+
+                <div class="btn-animate">
+                    <button type="submit" class="btn-signin">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>
